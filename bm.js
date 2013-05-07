@@ -15,22 +15,20 @@ var scrollElem = scrollableElement('html', 'body');
 var currentTab = '#tab-1';
 $(function(){
 	document.title = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
-	// if ("undefined" != typeof(isIE) && true == isIE) {
-	// 	$('#ie-only').show();
-	// }
 	var top = -1 * $('#spchar').height();
 	setCharCasePos();
+	setCharCasePos('#tipOfChar');
 	placeHolder();
 	clip = new ZeroClipboard.Client();
 	clip.glue( 'copyChar' );
-	clip.addEventListener( 'mouseDown', function() { 
-        clip.setText(chartext);
-    });
-    clip.addEventListener( 'onComplete', function() { 
-        showMsg ($('#copyChar'),'succuss','已成功复制到剪贴板~');
-    });
+	clip.addEventListener( 'mouseDown', function() {
+		clip.setText(chartext);
+	});
+	clip.addEventListener( 'onComplete', function() {
+		showMsg ($('#copyChar'),'succuss','已成功复制到剪贴板~');
+	});
 
-    
+
 });
 
 $(window).resize(function(){
@@ -48,30 +46,30 @@ $('input[type="text"]').keypress(function(event){
 $('#showPos').click(function(){
 	alert($('#setting').offset().top  + 'selft' + $(this).offset().left );
 });
-$('a[href*=#]').click(function() {
-	  var thisPath = filterPath(this.pathname) || locationPath;
-	  if (  locationPath == thisPath
-	  && (location.hostname == this.hostname || !this.hostname)
-	  && this.hash.replace(/#/,'') ) {
-	    var $target = $(this.hash), target = this.hash;
-	    if (target) {
-	       	var exOffset = 0;
-	       	if ($(window).height() > $target.innerHeight()) { 
-	          exOffset = ($(window).height() - $target.innerHeight()) / 2;
-	        }
-	      	var targetOffset = $target.offset().top + exOffset;
-	      	var oldHash = location.hash;
-	      	if (!location.hash) {
-	      		oldHash = '#app';
-	      	}
-	      	$('#nav li a[href=' + oldHash +']').removeClass('active');
-	        event.preventDefault();
-	        $(scrollElem).animate({scrollTop: targetOffset}, 400, function() {
-	          location.hash = target;
-	          $('#nav li a[href=' + target +']').addClass('active');
-	        });
-	    }
-	  }
+$('a[href*=#]').click(function(event) {
+	var thisPath = filterPath(this.pathname) || locationPath;
+	if (  locationPath == thisPath  &&
+		(location.hostname == this.hostname || !this.hostname) &&
+		this.hash.replace(/#/,'') ) {
+		var $target = $(this.hash), target = this.hash;
+		if (target) {
+			var exOffset = 0;
+			if ($(window).height() > $target.innerHeight()) {
+				exOffset = ($(window).height() - $target.innerHeight()) / 2;
+			}
+			var targetOffset = $target.offset().top + exOffset;
+			var oldHash = location.hash;
+			if (!location.hash) {
+				oldHash = '#app';
+			}
+			$('#nav li a[href=' + oldHash +']').removeClass('active');
+			$(scrollElem).animate({scrollTop: targetOffset}, 400, function() {
+				location.hash = target;
+				$('#nav li a[href=' + target +']').addClass('active');
+			});
+			return false;
+		}
+	}
 });
 
 $('#inputbox button').click(function(){
@@ -130,7 +128,7 @@ $('#spchar table tr td').click(function(){
 	if (showClickTip) {
 		showClickTip = false;
 		$('#tipOfChar').remove();
-	};
+	}
 	SelectText($(this)[0]);
 	chartext = $(this)[0].innerText;
 	$('#bmchar').val(chartext).css('color','#555');
@@ -157,18 +155,18 @@ $('#myTab label').click(function(){
 
 function scrollableElement(els) {
   for (var i = 0, argLength = arguments.length; i <argLength; i++) {
-    var el = arguments[i],
-        $scrollElement = $(el);
-    if ($scrollElement.scrollTop()> 0) {
-      return el;
-    } else {
-      $scrollElement.scrollTop(1);
-      var isScrollable = $scrollElement.scrollTop()> 0;
-      $scrollElement.scrollTop(0);
-      if (isScrollable) {
-        return el;
-      }
-    }
+	var el = arguments[i],
+		$scrollElement = $(el);
+	if ($scrollElement.scrollTop()> 0) {
+		return el;
+	} else {
+		$scrollElement.scrollTop(1);
+		var isScrollable = $scrollElement.scrollTop()> 0;
+		$scrollElement.scrollTop(0);
+		if (isScrollable) {
+			return el;
+		}
+	}
   }
   return [];
 }
@@ -206,7 +204,7 @@ function placeHolder () {
 			}
 		});
 		$input.bind('blur',function(){
-			if ($input.val() == '') {
+			if ($input.val() === '') {
 				$input.val($input.attr('placeholder')).css('color','#aaa');
 			}
 		});
@@ -216,24 +214,25 @@ function placeHolder () {
 function setCharCasePos (str) {
 	str = arguments[0] ? arguments[0] : '#bigSpChar';
 	var top = $('#spchar').offset().top;
-    var left = $('#app-content').offset().left + $('#app-content').outerWidth() - $(str).outerWidth()-4;
+	var left = $('#app-content').offset().left + $('#app-content').outerWidth() - $(str).outerWidth()-4;
 	$(str).css({'left':left,'top':top});
 }
 
 function checkInput () {
+	var str;
 	if (csLine) {
-		var str = $('#cstitle').val();
+		str = $('#cstitle').val();
 		str = str.replace(/(^\s*)|(\s*$)/g,"");
-		if (0 == str.length || str == $('#cstitle').attr('placeholder')) {
+		if (!str.length || str == $('#cstitle').attr('placeholder')) {
 			showMsg($('#cstitle'),'danger','请先输入您自定义的分隔线哦！');
 			$('#cstitle').val('');
 			$('#cstitle')[0].focus();
 			return false;
 		}
 	} else{
-		var str = $('#bmchar').val();
+		str = $('#bmchar').val();
 		str = str.replace(/(^\s*)|(\s*$)/g,"");
-		if (0 == str.length || str == $('#bmchar').attr('placeholder')) {
+		if (!str.length || str == $('#bmchar').attr('placeholder')) {
 			showMsg($('#bmchar'),'danger','请先输入字符哦！');
 			$('#bmchar').val('');
 			$('#bmchar')[0].focus();
@@ -251,17 +250,18 @@ function checkInput () {
 
 function generateStr (str,btitle) {
 	var title = str;
-	var step = str.length;
+		step = str.length,
+		i = 0;
 	if (addSpace) {
 		++step;
 		str += ' ';
 		title += ' ';
 	}
 	if (addTitle) {
-		var i = title.length;
+		i = title.length;
 		for (; i < 20; i += step) {
 			title += str;
-		};
+		}
 		title = title.substr(0,19);
 		title += ' ';
 		title += btitle + ' ';
@@ -269,29 +269,30 @@ function generateStr (str,btitle) {
 			title += str;
 		}
 	}else{
-		for (var i = title.length; i < 70; i += step) {
+		for (i = title.length; i < 70; i += step) {
 			title += str;
 		}
 	}
-	
+
 	return title;
 }
 
 function SelectText(element) {
-	var text = element;
+	var text = element,
+		range,selection;
 	if ($.browser.msie) {
-	var range = document.body.createTextRange();
-	range.moveToElementText(text);
-	range.select();
+		range = document.body.createTextRange();
+		range.moveToElementText(text);
+		range.select();
 	} else if ($.browser.mozilla || $.browser.opera) {
-	var selection = window.getSelection();
-	var range = document.createRange();
-	range.selectNodeContents(text);
-	selection.removeAllRanges();
-	selection.addRange(range);
+		selection = window.getSelection();
+		range = document.createRange();
+		range.selectNodeContents(text);
+		selection.removeAllRanges();
+		selection.addRange(range);
 	} else if ($.browser.safari) {
-	var selection = window.getSelection();
-	selection.setBaseAndExtent(text, 0, text, 1);
+		selection = window.getSelection();
+		selection.setBaseAndExtent(text, 0, text, 1);
 	}
 }
 
@@ -337,19 +338,19 @@ function showMsg (obj,msgtp,str) {
 (function(){
   var _w = 90 , _h = 24;
   var param = {
-    url:location.href,
-    type:'2',
-    count:'1', ///是否显示分享数，1显示(可选)
-    appkey:'675505486', //您申请的应用appkey,显示分享来源(可选)
-    title:'', //分享的文字内容(可选，默认为所在页面的title)
-    pic:'', //分享图片的路径(可选)
-    ralateUid:'1833184245', //关联用户的UID，分享微博会@该用户(可选)
+	url:location.href,
+	type:'2',
+	count:'1', ///是否显示分享数，1显示(可选)
+	appkey:'675505486', //您申请的应用appkey,显示分享来源(可选)
+	title:'', //分享的文字内容(可选，默认为所在页面的title)
+	pic:'', //分享图片的路径(可选)
+	ralateUid:'1833184245', //关联用户的UID，分享微博会@该用户(可选)
 	language:'zh_cn', //设置语言，zh_cn|zh_tw(可选)
-    rnd:new Date().valueOf()
+	rnd:new Date().valueOf()
   }
   var temp = [];
   for( var p in param ){
-    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+	temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
   }
   document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
 })()

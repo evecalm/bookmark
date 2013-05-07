@@ -72,7 +72,7 @@ a:hover{
 	background-color: #DFF0D8;
 	border-color: #D6E9C6;
 }
-ul#nav{
+#nav{
 	width: 100%;
 	background-color: #adb2b5;
 	border-bottom: 1px solid #ffffff;
@@ -84,45 +84,42 @@ ul#nav{
 	top: 0;
 	margin: 0 auto;
 	z-index: 105;
+	list-style: none;
 }
-ul#nav li{
+#nav li{
 	display: inline-block;
-	list-style-type: none;
+	*display: inline;
 	padding: 4px 8px;
 }
-ul#nav li a{
+#nav li a{
 	font-size: 16px;
 	font-weight: 400;
 	color: #069;
 	text-shadow: 2px 2px 1px #ccc;
-	border-top-width: 4px;
-	border-top-style: solid;
-	border-top-color: transparent;
+	border-top: 4px solid #adb2b5;
 }
-ul#nav li a:hover{
+#nav li a:hover{
 	text-decoration: none;
 	color: #111;
 }
-#nav li:nth-child(1) a.active{
+#nav li a.active{
+	color: #fff;
+}
+#lk-app a.active{
 	border-top-color: rgb(251, 185, 46);
-	color: #fff;
 }
-#nav li:nth-child(2) a.active{
+#lk-help a.active{
 	border-top-color: rgb(180, 246, 47);
-	color: #fff;
 }
-#nav li:nth-child(3) a.active{
+#lk-feedbac a.active{
 	border-top-color: rgb(58, 151, 250);
-	color: #fff;
 }
-#nav li:nth-child(4) a.active{
+#lk-about a.active{
 	border-top-color: rgb(213, 68, 246);
-	color: #fff;
 }
-#nav li:nth-child(5) a.active{
+/*#nav li:nth-child(5) a.active{
 	border-top-color: rgb(246, 80, 171); 
-	color: #fff;
-}
+}*/
 .strTip{
 	color:#666;
 }
@@ -335,7 +332,7 @@ a#more:hover,#inputbox button.hover{
 }
 #tipOfChar{
 	position: absolute;
-	left: 890px; 
+	left: 890px;
 	top: 255px; 
 	margin-right: -30px;
 	width: 150px;
